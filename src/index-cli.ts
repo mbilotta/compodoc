@@ -186,8 +186,8 @@ Note: Certain tabs will only be shown if applicable to a given dependency`,
                 COMPODOC_DEFAULTS.maxSearchResults
             )
             .option(
-                '--maxSizeFileSearchIndex [maxSizeFileSearchIndex]',
-                `Max length for the string of a file during Lunr search engine indexing. Default is ${COMPODOC_DEFAULTS.maxSizeFileSearchIndex}. To remove this limit, set to 0.`
+                '--maxSizeFileSearchIndex [number]',
+                `Max length for the string of a file during Lunr search engine indexing. To remove this limit, set to 0 (default: ${COMPODOC_DEFAULTS.maxSizeFileSearchIndex})`
             )
             .parse(process.argv);
 

@@ -395,6 +395,15 @@
             "examples": [
                 ""
             ]
+        },
+        "maxSizeFileSearchIndex": {
+            "$id": "/properties/maxSizeFileSearchIndex",
+            "type": "integer",
+            "title": "Max length for the string of a file during Lunr search engine indexing. To remove this limit, set to 0.",
+            "default": 50000,
+            "examples": [
+                100000
+            ]
         }
     }
 }

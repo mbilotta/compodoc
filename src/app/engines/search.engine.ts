@@ -1,7 +1,7 @@
 import * as Handlebars from 'handlebars';
 import * as path from 'path';
 
-import { MAX_SIZE_FILE_CHEERIO_PARSING, MAX_SIZE_FILE_SEARCH_INDEX } from '../../utils/constants';
+import { MAX_SIZE_FILE_CHEERIO_PARSING } from '../../utils/constants';
 
 import { logger } from '../../utils/logger';
 import Configuration from '../configuration';
@@ -28,7 +28,7 @@ export class SearchEngine {
         return SearchEngine.instance;
     }
 
-    public indexPage(page) {
+    public indexPage(page, maxSizeFileSearchIndex: number) {
         let text;
         this.amountOfMemory += page.rawData.length;
         if (this.amountOfMemory < MAX_SIZE_FILE_CHEERIO_PARSING) {
@@ -51,7 +51,7 @@ export class SearchEngine {
 
             if (
                 !this.documentsStore.hasOwnProperty(doc.url) &&
-                doc.body.length < MAX_SIZE_FILE_SEARCH_INDEX
+                (!maxSizeFileSearchIndex || doc.body.length < maxSizeFileSearchIndex)
             ) {
                 this.documentsStore[doc.url] = doc;
                 this.searchDocuments.push(doc);
@@ -61,7 +61,7 @@ export class SearchEngine {
 
     public generateSearchIndexJson(outputFolder: string): Promise<void> {
         let that = this;
-        let searchIndex = lunr(function() {
+        let searchIndex = lunr(function () {
             /* tslint:disable:no-invalid-this */
             this.ref('url');
             this.field('title');

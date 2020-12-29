@@ -2319,11 +2319,14 @@ at least one config for the 'info' or 'source' tab in --navTabConfig.`);
         }
 
         if (!Configuration.mainData.disableSearch) {
-            SearchEngine.indexPage({
-                infos: page,
-                rawData: htmlData,
-                url: finalPath
-            });
+            SearchEngine.indexPage(
+                {
+                    infos: page,
+                    rawData: htmlData,
+                    url: finalPath
+                },
+                Configuration.mainData.maxSizeFileSearchIndex
+            );
         }
 
         FileEngine.writeSync(finalPath, htmlData);

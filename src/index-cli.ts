@@ -185,6 +185,10 @@ Note: Certain tabs will only be shown if applicable to a given dependency`,
                 'Max search results on the results page. To show all results, set to 0',
                 COMPODOC_DEFAULTS.maxSearchResults
             )
+            .option(
+                '--maxSizeFileSearchIndex [maxSizeFileSearchIndex]',
+                `Max length for the string of a file during Lunr search engine indexing. Default is ${COMPODOC_DEFAULTS.maxSizeFileSearchIndex}. To remove this limit, set to 0.`
+            )
             .parse(process.argv);
 
         let outputHelp = () => {
@@ -608,6 +612,30 @@ Note: Certain tabs will only be shown if applicable to a given dependency`,
 
         if (program.maxSearchResults) {
             Configuration.mainData.maxSearchResults = program.maxSearchResults;
+        }
+
+        Configuration.mainData.maxSizeFileSearchIndex = COMPODOC_DEFAULTS.maxSizeFileSearchIndex;
+        if (typeof configFile.maxSizeFileSearchIndex !== 'undefined') {
+            let maxSizeFileSearchIndex = +configFile.maxSizeFileSearchIndex;
+            if (isNaN(maxSizeFileSearchIndex) || maxSizeFileSearchIndex < 0) {
+                logger.warn(
+                    `Ignoring option maxSizeFileSearchIndex set to invalid value ${JSON.stringify(
+                        configFile.maxSizeFileSearchIndex
+                    )}`
+                );
+            } else {
+                Configuration.mainData.maxSizeFileSearchIndex = maxSizeFileSearchIndex;
+            }
+        }
+        if (program.maxSizeFileSearchIndex) {
+            let maxSizeFileSearchIndex = +program.maxSizeFileSearchIndex;
+            if (isNaN(maxSizeFileSearchIndex) || maxSizeFileSearchIndex < 0) {
+                logger.error(
+                    `Invalid CLI option: --maxSizeFileSearchIndex ${program.maxSizeFileSearchIndex}`
+                );
+                process.exit(1);
+            }
+            Configuration.mainData.maxSizeFileSearchIndex = maxSizeFileSearchIndex;
         }
 
         if (configFile.files) {
